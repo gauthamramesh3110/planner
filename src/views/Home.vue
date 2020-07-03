@@ -16,10 +16,10 @@
     <v-main>
       <v-container fluid class="fill-height pa-0">
         <v-row no-gutters class="fill-height">
-          <v-col cols="8">
+          <v-col cols="7" xl="8">
             <Calendar></Calendar>
           </v-col>
-          <v-col cols="4" class="">
+          <v-col cols="5" xl="4"  class="secondary">
             <Tasks></Tasks>
           </v-col>
         </v-row>

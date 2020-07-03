@@ -6,9 +6,9 @@
         <v-icon>tune</v-icon>
       </v-btn>
       <v-btn-toggle class="mx-2" mandatory>
-        <v-btn width="90">Today</v-btn>
-        <v-btn width="90">Selected</v-btn>
-        <v-btn width="90">All</v-btn>
+        <v-btn width="100">Today</v-btn>
+        <v-btn width="100">Selected</v-btn>
+        <v-btn width="100">All</v-btn>
       </v-btn-toggle>
       <v-btn icon>
         <v-icon>sort</v-icon>
@@ -16,13 +16,37 @@
     </v-row>
 
     <!-- Add Task -->
-    <v-row class="mx-4" no-gutters>
-      <v-col col="4" class="mr-2">
-        <v-select label="Calendar" :items="calendars"  item-text="data().name" outlined dense hide-details>
-        </v-select>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field append-icon="add" label="Add Task" outlined dense></v-text-field>
+    <v-row class="mx-7 mb-3" no-gutters>
+      <v-col cols="12">
+        <v-text-field
+          append-icon="add"
+          label="Add New Task"
+          v-model="taskName"
+          @keypress.enter="addNewTask(taskName)"
+          :hint="taskCalendar.name ? taskCalendar.name : ''"
+          persistent-hint
+          dense
+          outlined
+        >
+          <template v-slot:prepend>
+            <v-menu offset-y>
+              <template v-slot:activator="{on}">
+                <v-icon v-on="on">calendar_today</v-icon>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(calendar, index) in calendars"
+                  :key="index"
+                  @click="setTaskCalendar(calendar)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{calendar.name}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </v-text-field>
       </v-col>
     </v-row>
 
@@ -50,13 +74,24 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "Tasks",
 
+  data() {
+    return {
+      taskName: null
+    };
+  },
+
+  methods: {
+    ...mapMutations(["setTaskCalendar",]),
+    ...mapActions(["addNewTask"])
+  },
+
   computed: {
-    ...mapGetters(["tasks", "calendars"])
+    ...mapGetters(["tasks", "calendars", "taskCalendar"])
   }
 };
 </script>

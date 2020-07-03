@@ -59,7 +59,34 @@ export default {
           .where("userId", "==", user.uid)
           .get()
           .then((snapshot) => {
-            commit('setTasks', snapshot.docs)
+            commit("setTasks", snapshot.docs);
+          });
+      })
+      .catch((err) => console.log(err));
+  },
+
+  addNewTask: ({ getters, commit }, taskName) => {
+    let db = firebase.firestore();
+    let newTask = {
+      name: taskName,
+      userId: getters.user.uid,
+      calendarId: getters.taskCalendar.id,
+      completed: false,
+      start: firebase.firestore.Timestamp.fromDate(new Date()),
+      end: firebase.firestore.Timestamp.fromDate(new Date()),
+      created: firebase.firestore.Timestamp.fromDate(new Date()),
+      subtasks: [],
+    };
+
+    db.collection("tasks")
+      .add(newTask)
+      .then((res) => {
+        let id = res.id;
+        db.collection("tasks")
+          .doc(id)
+          .get()
+          .then((docRef) => {
+            commit("addNewTask", docRef);
           });
       });
   },

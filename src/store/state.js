@@ -14,4 +14,9 @@ export default {
   calendars: [],
   tasks: [],
   selectedCalendars: [],
+  taskCalendar: {
+    id: null,
+    name: null,
+    color: null,
+  },
 };

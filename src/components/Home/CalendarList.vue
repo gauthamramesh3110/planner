@@ -2,10 +2,10 @@
   <v-list dense>
     <v-list-item class="px-12" v-for="(calendar, index) in calendars" :key="index" light>
       <v-list-item-action class="mr-3">
-        <v-checkbox v-model="selectedCalendars" :value="calendar.id" :color="calendar.data().color"></v-checkbox>
+        <v-checkbox v-model="selectedCalendars" :value="calendar.id" :color="calendar.color"></v-checkbox>
       </v-list-item-action>
       <v-list-item-content>
-        <v-list-item-title :class="calendar.data().color + '--text'">{{calendar.data().name}}</v-list-item-title>
+        <v-list-item-title :class="calendar.color + '--text'">{{calendar.name}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
   </v-list>
