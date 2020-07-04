@@ -51,12 +51,13 @@ export default {
 
     db.collection("calendars")
       .where("userId", "==", user.uid)
+      .orderBy("name")
       .get()
       .then((snapshot) => {
         commit("setCalendars", snapshot.docs);
-
         db.collection("tasks")
           .where("userId", "==", user.uid)
+          .orderBy("created")
           .get()
           .then((snapshot) => {
             commit("setTasks", snapshot.docs);
@@ -67,14 +68,36 @@ export default {
 
   addNewTask: ({ getters, commit }, taskName) => {
     let db = firebase.firestore();
+
+    let today = new Date();
+
     let newTask = {
       name: taskName,
       userId: getters.user.uid,
       calendarId: getters.taskCalendar.id,
+      color: getters.taskCalendar.color,
       completed: false,
-      start: firebase.firestore.Timestamp.fromDate(new Date()),
-      end: firebase.firestore.Timestamp.fromDate(new Date()),
-      created: firebase.firestore.Timestamp.fromDate(new Date()),
+      created: firebase.firestore.Timestamp.fromDate(today),
+      start: firebase.firestore.Timestamp.fromDate(
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          0,
+          0,
+          0
+        )
+      ),
+      end: firebase.firestore.Timestamp.fromDate(
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          24,
+          0,
+          0
+        )
+      ),
       subtasks: [],
     };
 
@@ -88,6 +111,18 @@ export default {
           .then((docRef) => {
             commit("addNewTask", docRef);
           });
+      });
+  },
+
+  deleteTask: ({ commit }, taskId) => {
+    let db = firebase.firestore();
+
+    db.collection("tasks")
+      .doc(taskId)
+      .delete()
+      .then(() => {
+        commit("deleteTask", taskId);
+        console.log("document deleted");
       });
   },
 };

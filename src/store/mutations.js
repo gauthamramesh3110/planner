@@ -11,6 +11,9 @@ export default {
       color: calendars[0].data().color,
     };
     console.log(state.taskCalendar);
+    calendars.forEach((calendar) => {
+      state.selectedCalendars.push(calendar.id);
+    });
   },
 
   setTasks: (state, tasks) => {
@@ -26,6 +29,14 @@ export default {
   },
 
   addNewTask: (state, newTask) => {
-      state.tasks.push(newTask)
-  }
+    state.tasks.push(newTask);
+  },
+
+  deleteTask: (state, taskId) => {
+    let filteredTask = state.tasks.filter((task) => {
+      return task.id != taskId;
+    });
+
+    state.tasks = filteredTask;
+  },
 };

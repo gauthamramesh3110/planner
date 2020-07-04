@@ -23,6 +23,7 @@
           label="Add New Task"
           v-model="taskName"
           @keypress.enter="addNewTask(taskName)"
+          @click:append="addNewTask(taskName)"
           :hint="taskCalendar.name ? taskCalendar.name : ''"
           persistent-hint
           dense
@@ -57,10 +58,32 @@
           <v-list-group v-for="(task, index) in tasks" :key="index">
             <template v-slot:activator>
               <v-list-item-action>
-                <v-checkbox></v-checkbox>
+                <v-checkbox :color="task.data().color"></v-checkbox>
               </v-list-item-action>
-              <v-list-item-title>{{task.data().name}}</v-list-item-title>
+              <v-list-item-content>
+                <v-list-item-title :class="task.data().color + '--text'">
+                  <span class="font-weight-bold">{{task.data().name}}</span>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  <span>{{displayDate(task.data().start.toDate())}}</span>
+                  <span>{{" to "}}</span>
+                  <span>{{displayDate(task.data().end.toDate())}}</span>
+                </v-list-item-subtitle>
+              </v-list-item-content>
             </template>
+
+            <v-list-item class="d-flex align-center justify-center" dense>
+              <v-btn icon>
+                <v-icon color="yellow darken-3">add_circle</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon color="blue darken-3">edit</v-icon>
+              </v-btn>
+              <v-btn @click="deleteTask(task.id)" icon>
+                <v-icon color="red darken-3">delete</v-icon>
+              </v-btn>
+            </v-list-item>
+
             <v-list-item v-for="(subtask, index) in task.data().subtasks" :key="index">
               <v-list-item-content>
                 <v-list-item-title>{{subtask.name}}</v-list-item-title>
@@ -86,8 +109,21 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["setTaskCalendar",]),
-    ...mapActions(["addNewTask"])
+    ...mapMutations(["setTaskCalendar"]),
+    ...mapActions(["addNewTask", "deleteTask"]),
+    displayDate(date) {
+      let day = date.toLocaleDateString([], {
+        day: "numeric",
+        month: "short"
+      });
+      let time = date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      let dateText = `${day} - ${time}`;
+      return dateText;
+    }
   },
 
   computed: {
