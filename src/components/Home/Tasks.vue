@@ -32,7 +32,7 @@
           <template v-slot:prepend>
             <v-menu offset-y>
               <template v-slot:activator="{on}">
-                <v-icon v-on="on">calendar_today</v-icon>
+                <v-icon v-on="on">event</v-icon>
               </template>
               <v-list>
                 <v-list-item
@@ -73,12 +73,17 @@
             </template>
 
             <v-list-item class="d-flex align-center justify-center" dense>
+              <!-- Add Subtask -->
               <v-btn icon>
                 <v-icon color="yellow darken-3">add_circle</v-icon>
               </v-btn>
-              <v-btn icon>
+
+              <!-- Edit Task -->
+              <v-btn @click="openEditDialog(task)" icon>
                 <v-icon color="blue darken-3">edit</v-icon>
               </v-btn>
+
+              <!-- Delete Task -->
               <v-btn @click="deleteTask(task.id)" icon>
                 <v-icon color="red darken-3">delete</v-icon>
               </v-btn>
@@ -93,14 +98,24 @@
         </v-list>
       </v-col>
     </v-row>
+
+    <!-- Edit Task Dialog-->
+    <v-dialog width="600" v-model="editDialogOpen">
+      <EditTaskDialog></EditTaskDialog>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import EditTaskDialog from "./EditTaskDialog";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "Tasks",
+
+  components: {
+    EditTaskDialog
+  },
 
   data() {
     return {
@@ -109,8 +124,18 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["setTaskCalendar"]),
+    ...mapMutations([
+      "setTaskCalendar",
+      "setEditDialogOpen",
+      "setEditableTaskId",
+      "setEditableTaskName",
+      "setEditableTaskStartDate",
+      "setEditableTaskStartTime",
+      "setEditableTaskEndDate",
+      "setEditableTaskEndTime"
+    ]),
     ...mapActions(["addNewTask", "deleteTask"]),
+
     displayDate(date) {
       let day = date.toLocaleDateString([], {
         day: "numeric",
@@ -123,11 +148,48 @@ export default {
 
       let dateText = `${day} - ${time}`;
       return dateText;
+    },
+
+    getISOFormatDate(date) {
+      let year = date.getFullYear();
+      let month = ("0" + (date.getMonth() + 1)).slice(-2);
+      let day = ("0" + date.getDate()).slice(-2);
+
+      return year + "-" + month + "-" + day;
+    },
+
+    getISOFormatTime(date) {
+      let hours = ("0" + date.getHours()).slice(-2);
+      let minutes = ("0" + date.getMinutes()).slice(-2);
+
+      return hours + ":" + minutes;
+    },
+
+    openEditDialog(task) {
+      let startSchedule = task.data().start.toDate();
+      let endSchedule = task.data().end.toDate();
+
+      this.setEditDialogOpen(true);
+      this.setEditableTaskId(task.id);
+      this.setEditableTaskName(task.data().name);
+      this.setEditableTaskStartDate(this.getISOFormatDate(startSchedule));
+      this.setEditableTaskStartTime(this.getISOFormatTime(startSchedule));
+      this.setEditableTaskEndDate(this.getISOFormatDate(endSchedule));
+      this.setEditableTaskEndTime(this.getISOFormatTime(endSchedule));
     }
   },
 
   computed: {
-    ...mapGetters(["tasks", "calendars", "taskCalendar"])
+    ...mapGetters(["tasks", "calendars", "taskCalendar"]),
+
+    editDialogOpen: {
+      get() {
+        return this.$store.state.editDialogOpen;
+      },
+      set(val) {
+        this.setEditDialogOpen(val);
+      }
+    }
   }
 };
 </script>

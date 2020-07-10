@@ -19,4 +19,13 @@ export default {
     name: null,
     color: null,
   },
+
+  //EDIT DIALOG STATES
+  editDialogOpen: false,
+  editableTaskId: null,
+  editableTaskName: null,
+  editableTaskStartDate: null,
+  editableTaskStartTime: null,
+  editableTaskEndDate: null,
+  editableTaskEndTime: null,
 };

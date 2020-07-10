@@ -39,4 +39,27 @@ export default {
 
     state.tasks = filteredTask;
   },
+
+  //EDIT DIALOG MUTATIONS
+  setEditDialogOpen: (state, val) => {
+    state.editDialogOpen = val;
+  },
+  setEditableTaskId: (state, val) => {
+    state.editableTaskId = val;
+  },
+  setEditableTaskName: (state, val) => {
+    state.editableTaskName = val;
+  },
+  setEditableTaskStartDate: (state, val) => {
+    state.editableTaskStartDate = val;
+  },
+  setEditableTaskStartTime: (state, val) => {
+    state.editableTaskStartTime = val;
+  },
+  setEditableTaskEndDate: (state, val) => {
+    state.editableTaskEndDate = val;
+  },
+  setEditableTaskEndTime: (state, val) => {
+    state.editableTaskEndTime = val;
+  },
 };
