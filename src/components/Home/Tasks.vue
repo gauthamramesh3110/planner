@@ -32,7 +32,7 @@
           <template v-slot:prepend>
             <v-menu offset-y>
               <template v-slot:activator="{on}">
-                <v-icon v-on="on">event</v-icon>
+                <v-icon :color="taskCalendar.color" v-on="on">event</v-icon>
               </template>
               <v-list>
                 <v-list-item
@@ -40,6 +40,9 @@
                   :key="index"
                   @click="setTaskCalendar(calendar)"
                 >
+                  <v-list-item-icon>
+                    <v-icon :color="calendar.color">fiber_manual_record</v-icon>
+                  </v-list-item-icon>
                   <v-list-item-content>
                     <v-list-item-title>{{calendar.name}}</v-list-item-title>
                   </v-list-item-content>
