@@ -1,7 +1,7 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-0" style="height: calc(100vh - 64px)" fluid>
     <!-- Header -->
-    <v-row align="center" justify="center" class="my-5" no-gutters>
+    <v-row style="height:100px" align="center" justify="center" no-gutters>
       <v-btn icon>
         <v-icon>tune</v-icon>
       </v-btn>
@@ -16,7 +16,7 @@
     </v-row>
 
     <!-- Add Task -->
-    <v-row class="mx-7 mb-3" no-gutters>
+    <v-row class="px-7" style="height:100px" align="center" no-gutters>
       <v-col cols="12">
         <v-text-field
           append-icon="add"
@@ -34,7 +34,7 @@
               <template v-slot:activator="{on}">
                 <v-icon :color="taskCalendar.color" v-on="on">event</v-icon>
               </template>
-              <v-list>
+              <v-list dense>
                 <v-list-item
                   v-for="(calendar, index) in calendars"
                   :key="index"
@@ -55,7 +55,7 @@
     </v-row>
 
     <!-- Task List -->
-    <v-row class="mx-4" no-gutters>
+    <v-row class="px-4 overflow-y-auto" style="height: calc(100vh - 264px)" no-gutters>
       <v-col>
         <v-list>
           <v-list-group v-for="(task, index) in tasks" :key="index">

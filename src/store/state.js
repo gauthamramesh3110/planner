@@ -28,4 +28,8 @@ export default {
   editableTaskStartTime: null,
   editableTaskEndDate: null,
   editableTaskEndTime: null,
+
+  //CALENDAR STATES
+  calendarDate: '',
+  displayDate: '',
 };

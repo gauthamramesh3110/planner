@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -12,8 +12,8 @@ export default {
     ...mapActions(["initializeFirebase"])
   },
 
-  created(){
-    this.initializeFirebase()
+  created() {
+    this.initializeFirebase();
   }
 };
 </script>

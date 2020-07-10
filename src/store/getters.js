@@ -54,4 +54,9 @@ export default {
   editableTaskEndTime: (state) => {
     return state.editableTaskEndTime;
   },
+
+  //CALENDAR STATE GETTERS
+  displayDate: (state) => {
+    return state.displayDate;
+  },
 };

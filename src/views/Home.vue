@@ -14,12 +14,12 @@
       </template>
     </v-navigation-drawer>
     <v-main>
-      <v-container fluid class="fill-height pa-0">
+      <v-container fluid class="pa-0" style="height: calc(100vh - 64px)">
         <v-row no-gutters class="fill-height">
           <v-col cols="7" xl="8">
             <Calendar></Calendar>
           </v-col>
-          <v-col cols="5" xl="4"  class="secondary">
+          <v-col cols="5" xl="4">
             <Tasks></Tasks>
           </v-col>
         </v-row>

@@ -100,4 +100,30 @@ export default {
   setEditableTaskEndTime: (state, val) => {
     state.editableTaskEndTime = val;
   },
+
+  //CALENDAR STATE MUTATIONS
+  setCalendarDate: (state, val) => {
+    state.calendarDate = val;
+
+    let months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    let date = new Date(val);
+    let month = date.getMonth();
+    let year = date.getFullYear();
+
+    state.displayDate = months[month] + ", " + year;
+  },
 };
