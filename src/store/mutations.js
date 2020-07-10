@@ -40,6 +40,14 @@ export default {
     state.tasks = filteredTask;
   },
 
+  editTask: (state, editedTask) => {
+    state.tasks.forEach((task) => {
+      if (task.id == state.editableTaskId) {
+        task = editedTask;
+      }
+    });
+  },
+
   //EDIT DIALOG MUTATIONS
   setEditDialogOpen: (state, val) => {
     state.editDialogOpen = val;

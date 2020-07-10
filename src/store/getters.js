@@ -32,4 +32,24 @@ export default {
 
     return tasks;
   },
+
+  //EDIT DIALOG STATE GETTERS
+  editableTaskId: (state) => {
+    return state.editableTaskId;
+  },
+  editableTaskName: (state) => {
+    return state.editableTaskName;
+  },
+  editableTaskStartDate: (state) => {
+    return state.editableTaskStartDate;
+  },
+  editableTaskStartTime: (state) => {
+    return state.editableTaskStartTime;
+  },
+  editableTaskEndDate: (state) => {
+    return state.editableTaskEndDate;
+  },
+  editableTaskEndTime: (state) => {
+    return state.editableTaskEndTime;
+  },
 };

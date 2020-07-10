@@ -125,4 +125,26 @@ export default {
         console.log("document deleted");
       });
   },
+
+  editTask: ({ getters, dispatch, commit }) => {
+    let db = firebase.firestore();
+    let start = new Date(
+      getters.editableTaskStartDate + " " + getters.editableTaskStartTime
+    );
+    let end = new Date(
+      getters.editableTaskEndDate + " " + getters.editableTaskEndTime
+    );
+
+    db.collection("tasks")
+      .doc(getters.editableTaskId)
+      .update({
+        name: getters.editableTaskName,
+        start,
+        end,
+      })
+      .then(() => {
+        dispatch("getAllCalendarsAndTasks");
+        commit("setEditDialogOpen", false);
+      });
+  },
 };

@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   name: "EditTaskDialog",
@@ -92,12 +92,14 @@ export default {
       "setEditableTaskEndTime"
     ]),
 
+    ...mapActions(["editTask"]),
+
     closeEditDialog() {
       this.setEditDialogOpen(false);
     },
 
     save() {
-      console.log("save");
+      this.editTask();
     }
   },
 
