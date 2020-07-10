@@ -61,17 +61,19 @@
           <v-list-group v-for="(task, index) in tasks" :key="index">
             <template v-slot:activator>
               <v-list-item-action>
-                <v-checkbox :color="task.data().color"></v-checkbox>
+                <v-checkbox
+                  :color="task.color"
+                  :input-value="task.completed"
+                  @click.stop="toggleCompleted(task.id)"
+                ></v-checkbox>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title :class="task.data().color + '--text'">
-                  <span class="font-weight-bold">{{task.data().name}}</span>
+                <v-list-item-title
+                  :class="task.completed ? task.color + '--text text-decoration-line-through ' : task.color + '--text'"
+                >
+                  <span class="font-weight-bold">{{task.name}}</span>
                 </v-list-item-title>
-                <v-list-item-subtitle>
-                  <span>{{displayDate(task.data().start.toDate())}}</span>
-                  <span>{{" to "}}</span>
-                  <span>{{displayDate(task.data().end.toDate())}}</span>
-                </v-list-item-subtitle>
+                <v-list-item-subtitle>{{displayDateRange(task.start, task.end)}}</v-list-item-subtitle>
               </v-list-item-content>
             </template>
 
@@ -92,7 +94,7 @@
               </v-btn>
             </v-list-item>
 
-            <v-list-item v-for="(subtask, index) in task.data().subtasks" :key="index">
+            <v-list-item v-for="(subtask, index) in task.subtasks" :key="index">
               <v-list-item-content>
                 <v-list-item-title>{{subtask.name}}</v-list-item-title>
               </v-list-item-content>
@@ -137,20 +139,24 @@ export default {
       "setEditableTaskEndDate",
       "setEditableTaskEndTime"
     ]),
-    ...mapActions(["addNewTask", "deleteTask"]),
+    ...mapActions(["addNewTask", "deleteTask", "toggleCompleted"]),
 
-    displayDate(date) {
-      let day = date.toLocaleDateString([], {
+    displayDateRange(start, end) {
+      let startString = start.toLocaleString([], {
         day: "numeric",
-        month: "short"
-      });
-      let time = date.toLocaleTimeString([], {
+        month: "short",
         hour: "2-digit",
         minute: "2-digit"
       });
 
-      let dateText = `${day} - ${time}`;
-      return dateText;
+      let endString = end.toLocaleString([], {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      return startString + " to " + endString;
     },
 
     getISOFormatDate(date) {
@@ -169,12 +175,12 @@ export default {
     },
 
     openEditDialog(task) {
-      let startSchedule = task.data().start.toDate();
-      let endSchedule = task.data().end.toDate();
+      let startSchedule = task.start;
+      let endSchedule = task.end;
 
       this.setEditDialogOpen(true);
       this.setEditableTaskId(task.id);
-      this.setEditableTaskName(task.data().name);
+      this.setEditableTaskName(task.name);
       this.setEditableTaskStartDate(this.getISOFormatDate(startSchedule));
       this.setEditableTaskStartTime(this.getISOFormatTime(startSchedule));
       this.setEditableTaskEndDate(this.getISOFormatDate(endSchedule));

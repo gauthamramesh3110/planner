@@ -8,13 +8,7 @@ export default {
   },
 
   calendars: (state) => {
-    return state.calendars.map((calendar) => {
-      return {
-        id: calendar.id,
-        name: calendar.data().name,
-        color: calendar.data().color,
-      };
-    });
+    return state.calendars;
   },
 
   selectedCalendars: (state) => {
@@ -27,10 +21,18 @@ export default {
 
   tasks: (state) => {
     let tasks = state.tasks.filter((task) => {
-      return state.selectedCalendars.includes(task.data().calendarId);
+      return state.selectedCalendars.includes(task.calendarId);
     });
 
     return tasks;
+  },
+
+  taskById: (state) => (taskId) => {
+    let task = state.tasks.filter((task) => {
+      return task.id == taskId;
+    });
+
+    return task[0];
   },
 
   //EDIT DIALOG STATE GETTERS

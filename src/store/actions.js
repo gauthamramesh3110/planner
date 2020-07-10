@@ -77,26 +77,22 @@ export default {
       calendarId: getters.taskCalendar.id,
       color: getters.taskCalendar.color,
       completed: false,
-      created: firebase.firestore.Timestamp.fromDate(today),
-      start: firebase.firestore.Timestamp.fromDate(
-        new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate(),
-          0,
-          0,
-          0
-        )
+      created: today,
+      start: new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        0,
+        0,
+        0
       ),
-      end: firebase.firestore.Timestamp.fromDate(
-        new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate(),
-          24,
-          0,
-          0
-        )
+      end: new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        24,
+        0,
+        0
       ),
       subtasks: [],
     };
@@ -104,13 +100,8 @@ export default {
     db.collection("tasks")
       .add(newTask)
       .then((res) => {
-        let id = res.id;
-        db.collection("tasks")
-          .doc(id)
-          .get()
-          .then((docRef) => {
-            commit("addNewTask", docRef);
-          });
+        newTask.id = res.id;
+        commit("addNewTask", newTask);
       });
   },
 
@@ -126,7 +117,7 @@ export default {
       });
   },
 
-  editTask: ({ getters, dispatch, commit }) => {
+  editTask: ({ getters, commit }) => {
     let db = firebase.firestore();
     let start = new Date(
       getters.editableTaskStartDate + " " + getters.editableTaskStartTime
@@ -143,8 +134,20 @@ export default {
         end,
       })
       .then(() => {
-        dispatch("getAllCalendarsAndTasks");
+        commit("editTask");
         commit("setEditDialogOpen", false);
       });
+  },
+
+  toggleCompleted: ({ getters, commit }, taskId) => {
+    commit("toggleCompleted", taskId);
+    let db = firebase.firestore();
+
+    db.collection("tasks")
+      .doc(taskId)
+      .update({
+        completed: getters.taskById(taskId).completed,
+      })
+      .catch((err) => console.log(err));
   },
 };

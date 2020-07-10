@@ -4,20 +4,36 @@ export default {
   },
 
   setCalendars: (state, calendars) => {
-    state.calendars = calendars;
-    state.taskCalendar = {
-      id: calendars[0].id,
-      name: calendars[0].data().name,
-      color: calendars[0].data().color,
-    };
-    console.log(state.taskCalendar);
     calendars.forEach((calendar) => {
+      let convertedCalendar = {
+        id: calendar.id,
+        name: calendar.data().name,
+        color: calendar.data().color,
+      };
+      state.calendars.push(convertedCalendar);
       state.selectedCalendars.push(calendar.id);
     });
+
+    state.taskCalendar = state.calendars[0];
   },
 
   setTasks: (state, tasks) => {
-    state.tasks = tasks;
+    tasks.forEach((task) => {
+      let convertedTask = {
+        id: task.id,
+        userId: task.data().userId,
+        calendarId: task.data().calendarId,
+        created: task.data().created.toDate(),
+        name: task.data().name,
+        completed: task.data().completed,
+        start: task.data().start.toDate(),
+        end: task.data().end.toDate(),
+        subtasks: task.data().subtasks,
+        color: task.data().color,
+      };
+
+      state.tasks.push(convertedTask);
+    });
   },
 
   setSelectedCalendars: (state, selectedCalendars) => {
@@ -40,10 +56,24 @@ export default {
     state.tasks = filteredTask;
   },
 
-  editTask: (state, editedTask) => {
+  editTask: (state) => {
     state.tasks.forEach((task) => {
       if (task.id == state.editableTaskId) {
-        task = editedTask;
+        task.name = state.editableTaskName;
+        task.start = new Date(
+          state.editableTaskStartDate + " " + state.editableTaskStartTime
+        );
+        task.end = new Date(
+          state.editableTaskEndDate + " " + state.editableTaskEndTime
+        );
+      }
+    });
+  },
+
+  toggleCompleted: (state, taskId) => {
+    state.tasks.forEach((task) => {
+      if (task.id == taskId) {
+        task.completed = !task.completed;
       }
     });
   },
