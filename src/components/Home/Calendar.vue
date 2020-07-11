@@ -17,6 +17,7 @@
         ref="calendar"
         color="primary"
         :event-color="getEventColor"
+        @click:date="setSelectedDate"
       ></v-calendar>
     </v-row>
   </v-container>
@@ -29,7 +30,7 @@ export default {
   name: "Calendar",
 
   methods: {
-    ...mapMutations(["setCalendarDate"]),
+    ...mapMutations(["setCalendarDate", "setSelectedDate"]),
 
     getEventColor(event) {
       return event.color;
@@ -59,6 +60,7 @@ export default {
     let ISODate = year + "-" + month + "-" + day;
 
     this.setCalendarDate(ISODate);
+    this.setSelectedDate({ date: ISODate });
   }
 };
 </script>

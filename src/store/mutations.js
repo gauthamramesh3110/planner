@@ -126,4 +126,8 @@ export default {
 
     state.displayDate = months[month] + ", " + year;
   },
+
+  setSelectedDate: (state, { date }) => {
+    state.selectedDate = date;
+  },
 };

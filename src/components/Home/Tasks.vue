@@ -6,9 +6,9 @@
         <v-icon>tune</v-icon>
       </v-btn>
       <v-btn-toggle class="mx-2" mandatory>
-        <v-btn width="100">Today</v-btn>
-        <v-btn width="100">Selected</v-btn>
-        <v-btn width="100">All</v-btn>
+        <v-btn width="100" @click="taskDisplayMode = 'today'">Today</v-btn>
+        <v-btn width="100" @click="taskDisplayMode = 'selected'">Selected</v-btn>
+        <v-btn width="100" @click="taskDisplayMode = 'all'">All</v-btn>
       </v-btn-toggle>
       <v-btn icon>
         <v-icon>sort</v-icon>
@@ -58,7 +58,7 @@
     <v-row class="px-4 overflow-y-auto" style="height: calc(100vh - 264px)" no-gutters>
       <v-col>
         <v-list>
-          <v-list-group v-for="(task, index) in tasks" :key="index">
+          <v-list-group v-for="(task, index) in filteredTasks" :key="index">
             <template v-slot:activator>
               <v-list-item-action>
                 <v-checkbox
@@ -124,7 +124,8 @@ export default {
 
   data() {
     return {
-      taskName: null
+      taskName: null,
+      taskDisplayMode: "today"
     };
   },
 
@@ -189,7 +190,23 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["tasks", "calendars", "taskCalendar"]),
+    ...mapGetters(["tasks", "calendars", "taskCalendar", "selectedDate"]),
+
+    filteredTasks: {
+      get() {
+        return this.tasks.filter(task => {
+          if (this.taskDisplayMode == "today") {
+            let today = new Date();
+            return task.start <= today && task.end >= today;
+          } else if (this.taskDisplayMode == "selected") {
+            let selectedDate = new Date(this.selectedDate);
+            return task.start <= selectedDate && task.end >= selectedDate;
+          } else if (this.taskDisplayMode == "all") {
+            return true;
+          }
+        });
+      }
+    },
 
     editDialogOpen: {
       get() {

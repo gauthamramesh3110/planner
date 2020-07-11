@@ -59,4 +59,8 @@ export default {
   displayDate: (state) => {
     return state.displayDate;
   },
+
+  selectedDate: (state) => {
+    return state.selectedDate;
+  },
 };

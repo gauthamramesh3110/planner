@@ -30,6 +30,7 @@ export default {
   editableTaskEndTime: null,
 
   //CALENDAR STATES
-  calendarDate: '',
-  displayDate: '',
+  calendarDate: "",
+  displayDate: "",
+  selectedDate: ""
 };
