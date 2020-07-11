@@ -3,7 +3,16 @@ export default {
     state.user = user;
   },
 
+  setUserDetails: (state, val) => {
+    state.userDetails = val;
+  },
+
+  setNewUser: (state, val) => {
+    state.isNewUser = val;
+  },
+
   setCalendars: (state, calendars) => {
+    state.calendars = [];
     calendars.forEach((calendar) => {
       let convertedCalendar = {
         id: calendar.id,
@@ -18,6 +27,7 @@ export default {
   },
 
   setTasks: (state, tasks) => {
+    state.tasks = []
     tasks.forEach((task) => {
       let convertedTask = {
         id: task.id,
@@ -129,5 +139,21 @@ export default {
 
   setSelectedDate: (state, { date }) => {
     state.selectedDate = date;
+  },
+
+  addCalendar: (state, newCalendar) => {
+    state.calendars.push(newCalendar);
+    state.calendars.sort((a, b) => {
+      var x = a.name.toLowerCase();
+      var y = b.name.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    state.selectedCalendars.push(newCalendar.id);
   },
 };

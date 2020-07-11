@@ -7,6 +7,14 @@ export default {
     return state.user;
   },
 
+  isNewUser: (state) => {
+    return state.isNewUser;
+  },
+
+  userDetails: (state) => {
+    return state.userDetails;
+  },
+
   calendars: (state) => {
     return state.calendars;
   },
@@ -62,5 +70,10 @@ export default {
 
   selectedDate: (state) => {
     return state.selectedDate;
+  },
+
+  //ADD CALENDAR STATE GETTERS
+  calendarColors: (state) => {
+    return state.calendarColors;
   },
 };

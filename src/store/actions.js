@@ -8,19 +8,27 @@ export default {
     firebase.initializeApp(getters.firebaseConfig);
   },
 
-  signInWithEmailAndPassword: (context, userDetails) => {
+  signInWithEmailAndPassword: ({ commit }, userDetails) => {
+    commit("setNewUser", false);
+
     firebase
       .auth()
       .signInWithEmailAndPassword(userDetails.email, userDetails.password)
-      .then(() => console.log("Logged In"))
       .catch((err) => console.log(err));
   },
 
-  createUserWithEmailAndPassword: (context, userDetails) => {
+  createUserWithEmailAndPassword: ({ commit }, userDetails) => {
+    commit("setNewUser", true);
+
+    let newUserDetails = {
+      name: userDetails.name,
+      email: userDetails.email,
+    };
+    commit("setUserDetails", newUserDetails);
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(userDetails.email, userDetails.password)
-      .then(() => console.log("User Created"))
       .catch((err) => console.log(err));
   },
 
@@ -28,9 +36,53 @@ export default {
     firebase.auth().signOut();
   },
 
-  onAuthStateChanged: ({ commit, dispatch }, currentRoute) => {
+  onAuthStateChanged: ({ getters, commit, dispatch }, currentRoute) => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        let db = firebase.firestore();
+
+        if (getters.isNewUser) {
+          //ADD NEW USER DETAILS TO DATABASE
+          let newUserDetails = getters.userDetails;
+          newUserDetails.userId = getters.user.uid;
+
+          console.log("Adding User");
+          db.collection("userDetails").add(newUserDetails);
+
+          //ADD DEFAULT CALENDAR TO DATABASE
+          let defaultCalendar = {
+            name: "Default",
+            color: "greyTask",
+            userId: user.uid,
+          };
+          db.collection("calendars")
+            .add(defaultCalendar)
+            .then((res) => {
+              defaultCalendar.id = res.id;
+              commit("addCalendar", defaultCalendar);
+            });
+
+          //UNSET NEW USER
+          commit("setNewUser", false);
+        } else if (getters.userDetails == null) {
+          //GET USER DETAILS
+          console.log("Getting User");
+          db.collection("userDetails")
+            .where("userId", "==", user.uid)
+            .get()
+            .then((snapshot) => {
+              let user = snapshot.docs[0];
+
+              let userDetails = {
+                userId: user.data().userId,
+                name: user.data().name,
+                email: user.data().email,
+              };
+
+              commit("setUserDetails", userDetails);
+            });
+        }
+
         if (currentRoute == "/login") {
           router.push("/");
         }
@@ -147,6 +199,24 @@ export default {
       .doc(taskId)
       .update({
         completed: getters.taskById(taskId).completed,
+      })
+      .catch((err) => console.log(err));
+  },
+
+  addCalendar: ({ getters, commit }, data) => {
+    let newCalendar = {
+      userId: getters.user.uid,
+      name: data[0],
+      color: data[1],
+    };
+
+    let db = firebase.firestore();
+
+    db.collection("calendars")
+      .add(newCalendar)
+      .then((res) => {
+        newCalendar.id = res.id;
+        commit("addCalendar", newCalendar);
       })
       .catch((err) => console.log(err));
   },

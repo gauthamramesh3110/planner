@@ -11,6 +11,8 @@ export default {
   },
 
   user: null,
+  userDetails: null,
+  isNewUser: false,
   calendars: [],
   tasks: [],
   selectedCalendars: [],
@@ -32,5 +34,14 @@ export default {
   //CALENDAR STATES
   calendarDate: "",
   displayDate: "",
-  selectedDate: ""
+  selectedDate: "",
+
+  //ADD CALENDAR STATES
+  calendarColors: [
+    "redTask",
+    "blueTask",
+    "greenTask",
+    "yellowTask",
+    "greyTask",
+  ],
 };
