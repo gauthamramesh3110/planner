@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 fill-height" fluid>
+  <v-container class="fill-height" fluid>
     <v-row style="height:10%" justify="center" align="center" no-gutters>
       <v-btn @click="$refs.calendar.prev()" icon>
         <v-icon>keyboard_arrow_left</v-icon>
