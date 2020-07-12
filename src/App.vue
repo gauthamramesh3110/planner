@@ -1,7 +1,7 @@
 <template>
   <div>
-    <router-view v-if="!$vuetify.breakpoint.mobile"></router-view>
-    <Error v-else></Error>
+    <Error v-if="$vuetify.breakpoint.xs"></Error>
+    <router-view v-else></router-view>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   name: "App",
 
   components: {
-    Error,
+    Error
   },
 
   methods: {

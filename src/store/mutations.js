@@ -7,10 +7,6 @@ export default {
     state.userDetails = val;
   },
 
-  setNewUser: (state, val) => {
-    state.isNewUser = val;
-  },
-
   setCalendars: (state, calendars) => {
     state.calendars = [];
     calendars.forEach((calendar) => {
@@ -27,7 +23,7 @@ export default {
   },
 
   setTasks: (state, tasks) => {
-    state.tasks = []
+    state.tasks = [];
     tasks.forEach((task) => {
       let convertedTask = {
         id: task.id,

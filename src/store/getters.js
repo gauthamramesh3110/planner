@@ -7,10 +7,6 @@ export default {
     return state.user;
   },
 
-  isNewUser: (state) => {
-    return state.isNewUser;
-  },
-
   userDetails: (state) => {
     return state.userDetails;
   },

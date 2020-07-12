@@ -11,8 +11,12 @@ export default {
   },
 
   user: null,
-  userDetails: null,
-  isNewUser: false,
+  userDetails: {
+    id: null,
+    name: 'Username',
+    email: 'Email'
+  },
+
   calendars: [],
   tasks: [],
   selectedCalendars: [],
