@@ -15,7 +15,7 @@
         v-model="calendarDate"
         :events="tasks"
         ref="calendar"
-        color="primary"
+        color="accent"
         :event-color="getEventColor"
         @click:date="setSelectedDate"
       ></v-calendar>

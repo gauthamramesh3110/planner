@@ -47,5 +47,7 @@ export default {
     "greenTask",
     "yellowTask",
     "greyTask",
+    "purpleTask",
+    "orangeTask"
   ],
 };
