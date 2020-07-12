@@ -17,7 +17,9 @@
               </v-window-item>
             </v-window>
           </v-col>
-          <v-col cols="8" class="grey lighten-3"></v-col>
+          <v-col cols="8">
+            <v-img src="../assets/Artwork.png" height="100vh" contain></v-img>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
